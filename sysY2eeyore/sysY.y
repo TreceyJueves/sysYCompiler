@@ -1,8 +1,3 @@
-/* 
-  Name: Li yunqi
-  Number: 1700015821
-*/
-
 %{
 #include "parser.hpp"
 
