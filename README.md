@@ -1,7 +1,19 @@
 # sysYCompiler
 3-stage sysY compiler using lex and yacc
 
-the current eeyore2tigger has no register allocation
+cd ./sysy2eeyore
+
+./compiler -S -e input.sy -o output.eeyore
+
+cd ./eeyore2tigger
+
+./compiler -S -e input.eeyore -o output.tigger
+
+cd ./tigger2riscv
+
+./compiler -S -e input.tigger -o output.S
+
+the current eeyore2tigger has no register allocation at all (all variables stored in stack)
 
 别问我为什么不用store，我只是想把功能给过了罢了
 
