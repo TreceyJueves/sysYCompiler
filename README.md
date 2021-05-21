@@ -22,45 +22,45 @@ the current eeyore2tigger has no register allocation at all (all variables store
 
 sysY EBNF
 
-CompUnit      ::= [CompUnit] (Decl | FuncDef);
+    CompUnit      ::= [CompUnit] (Decl | FuncDef);
 
 
 
-Decl          ::= ConstDecl | VarDecl;
+    Decl          ::= ConstDecl | VarDecl;
 
-ConstDecl     ::= "const" BType ConstDef {"," ConstDef} ";";
+    ConstDecl     ::= "const" BType ConstDef {"," ConstDef} ";";
 
-BType         ::= "int";
+    BType         ::= "int";
 
-ConstDef      ::= IDENT {"[" ConstExp "]"} "=" ConstInitVal;
+    ConstDef      ::= IDENT {"[" ConstExp "]"} "=" ConstInitVal;
 
-ConstInitVal  ::= ConstExp | "{" [ConstInitVal {"," ConstInitVal}] "}";
+    ConstInitVal  ::= ConstExp | "{" [ConstInitVal {"," ConstInitVal}] "}";
 
-VarDecl       ::= BType VarDef {"," VarDef} ";";
+    VarDecl       ::= BType VarDef {"," VarDef} ";";
 
-VarDef        ::= IDENT {"[" ConstExp "]"}
+    VarDef        ::= IDENT {"[" ConstExp "]"}
 
                 | IDENT {"[" ConstExp "]"} "=" InitVal;
                 
-InitVal       ::= Exp | "{" [InitVal {"," InitVal}] "}";
+    InitVal       ::= Exp | "{" [InitVal {"," InitVal}] "}";
 
 
 
-FuncDef       ::= FuncType IDENT "(" [FuncFParams] ")" Block;
+    FuncDef       ::= FuncType IDENT "(" [FuncFParams] ")" Block;
 
-FuncType      ::= "void" | "int";
+    FuncType      ::= "void" | "int";
 
-FuncFParams   ::= FuncFParam {"," FuncFParam};
+    FuncFParams   ::= FuncFParam {"," FuncFParam};
 
-FuncFParam    ::= BType IDENT ["[" "]" {"[" ConstExp "]"}];
+    FuncFParam    ::= BType IDENT ["[" "]" {"[" ConstExp "]"}];
 
 
 
-Block         ::= "{" {BlockItem} "}";
+    Block         ::= "{" {BlockItem} "}";
 
-BlockItem     ::= Decl | Stmt;
+    BlockItem     ::= Decl | Stmt;
 
-Stmt          ::= LVal "=" Exp ";"
+    Stmt          ::= LVal "=" Exp ";"
 
                 | [Exp] ";"
                 
@@ -78,32 +78,32 @@ Stmt          ::= LVal "=" Exp ";"
 
 
 
-Exp           ::= AddExp;
+    Exp           ::= AddExp;
 
-Cond          ::= LOrExp;
+    Cond          ::= LOrExp;
 
-LVal          ::= IDENT {"[" Exp "]"};
+    LVal          ::= IDENT {"[" Exp "]"};
 
-PrimaryExp    ::= "(" Exp ")" | LVal | Number;
+    PrimaryExp    ::= "(" Exp ")" | LVal | Number;
 
-Number        ::= INT_CONST;
+    Number        ::= INT_CONST;
 
-UnaryExp      ::= PrimaryExp | IDENT "(" [FuncRParams] ")" | UnaryOp UnaryExp;
+    UnaryExp      ::= PrimaryExp | IDENT "(" [FuncRParams] ")" | UnaryOp UnaryExp;
 
-UnaryOp       ::= "+" | "-" | "!";
+    UnaryOp       ::= "+" | "-" | "!";
 
-FuncRParams   ::= Exp {"," Exp};
+    FuncRParams   ::= Exp {"," Exp};
 
-MulExp        ::= UnaryExp | MulExp ("*" | "/" | "%") UnaryExp;
+    MulExp        ::= UnaryExp | MulExp ("*" | "/" | "%") UnaryExp;
 
-AddExp        ::= MulExp | AddExp ("+" | "-") MulExp;
+    AddExp        ::= MulExp | AddExp ("+" | "-") MulExp;
 
-RelExp        ::= AddExp | RelExp ("<" | ">" | "<=" | ">=") AddExp;
+    RelExp        ::= AddExp | RelExp ("<" | ">" | "<=" | ">=") AddExp;
 
-EqExp         ::= RelExp | EqExp ("==" | "!=") RelExp;
+    EqExp         ::= RelExp | EqExp ("==" | "!=") RelExp;
 
-LAndExp       ::= EqExp | LAndExp "&&" EqExp;
+    LAndExp       ::= EqExp | LAndExp "&&" EqExp;
 
-LOrExp        ::= LAndExp | LOrExp "||" LAndExp;
+    LOrExp        ::= LAndExp | LOrExp "||" LAndExp;
 
-ConstExp      ::= AddExp;
+    ConstExp      ::= AddExp;
