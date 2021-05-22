@@ -21,7 +21,7 @@ const_int ({integer}|{oct_integer}|{hex_integer})
 string \"[^"\n]*\"
 identifier	[a-zA-Z_]([a-zA-Z_0-9])*
 whitespace	[ \t]
-enter [\n]|[\r\n]
+enter [\n]|[\r][\n]
 comment "//"[^\n]*|("/*"([^\*]|(\*)*[^\*/])*(\*)*"*/")
 %%
 

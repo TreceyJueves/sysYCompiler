@@ -18,7 +18,7 @@ extern void scantree(basenode*);
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
 %%
-Program : CompUnit {$$=$1; root = $1;}
+Program : CompUnit {$$=$1; root = $1;};
 CompUnit: Decl{ 
                 basenode* tmp = new basenode(_compunit);
                 tmp->Son.push_back($1);
@@ -403,7 +403,7 @@ LVal_Array: {
               basenode *tmp = new basenode(_lvaldim);
               $$ = tmp;
         }
-        | LVal_Array LBRK ConstExp RBRK{
+        | LVal_Array LBRK Exp RBRK{
               basenode* tmp = new basenode(_lvaldim);
               tmp->Son.push_back($1);
               tmp->Son.push_back($3);

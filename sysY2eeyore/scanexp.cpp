@@ -631,11 +631,16 @@ std::pair<std::pair<int, int>, v_type> scanlval(basenode* root, bool isdec){
                     tmp_cnt++;
                 }
                 else{
-                    if(isdec && !noprint)
+                    int old_cnt = tmp_cnt;
+                    tmp_cnt++;
+                    if(isdec && !noprint){
+                        fprintf(yyout, "var t%d\n",old_cnt);
                         fprintf(yyout, "var t%d\n", tmp_cnt);
+                    }
+                        
                     if(!isdec && !noprint){
-                        fprintf(yyout, "t%d = %c%d * %d\n", tmp_cnt, c, cur_lval_array[i].first.first,var_array[val_tid][i+1]*4);
-                        fprintf(yyout, "t%d = t%d + t%d\n", tmp_cnt, tmp_cnt, tmp_ID);
+                        fprintf(yyout, "t%d = %c%d * %d\n", old_cnt, c, cur_lval_array[i].first.first,var_array[val_tid][i+1]*4);
+                        fprintf(yyout, "t%d = t%d + t%d\n", tmp_cnt, old_cnt, tmp_ID);
                     }
                     tmp_ID = tmp_cnt++;
                 }
@@ -650,11 +655,15 @@ std::pair<std::pair<int, int>, v_type> scanlval(basenode* root, bool isdec){
                     tmp_cnt++;
                 }
                 else{
-                    if(isdec && !noprint)
+                    int old_cnt = tmp_cnt;
+                    tmp_cnt++;
+                    if(isdec && !noprint){
+                        fprintf(yyout, "var t%d\n", old_cnt);
                         fprintf(yyout, "var t%d\n", tmp_cnt);
+                    }
                     if(!isdec && !noprint){
-                        fprintf(yyout, "t%d = p%d * %d\n", tmp_cnt, cur_lval_array[i].first.first,var_array[val_tid][i+1]*4);
-                        fprintf(yyout, "t%d = t%d + t%d\n", tmp_cnt, tmp_cnt, tmp_ID);
+                        fprintf(yyout, "t%d = p%d * %d\n", old_cnt, cur_lval_array[i].first.first,var_array[val_tid][i+1]*4);
+                        fprintf(yyout, "t%d = t%d + t%d\n", tmp_cnt, old_cnt, tmp_ID);
                     }
                     tmp_ID = tmp_cnt++;
                 }
@@ -669,11 +678,15 @@ std::pair<std::pair<int, int>, v_type> scanlval(basenode* root, bool isdec){
                     tmp_ID = tmp_cnt++;
                 }
                 else{
-                    if(isdec && !noprint)
+                    int old_cnt = tmp_cnt;
+                    tmp_cnt++;
+                    if(isdec && !noprint){
+                        fprintf(yyout, "var t%d\n",old_cnt);
                         fprintf(yyout, "var t%d\n", tmp_cnt);
+                    }
                     if(!isdec && !noprint){
-                        fprintf(yyout, "t%d = p%d[t%d] * %d\n", tmp_cnt, cur_lval_array[i].first.first, cur_lval_array[i].first.second,var_array[val_tid][i+1]*4);
-                        fprintf(yyout, "t%d = t%d + t%d\n", tmp_cnt, tmp_cnt, tmp_ID);
+                        fprintf(yyout, "t%d = p%d[t%d] * %d\n", old_cnt, cur_lval_array[i].first.first, cur_lval_array[i].first.second,var_array[val_tid][i+1]*4);
+                        fprintf(yyout, "t%d = t%d + t%d\n", tmp_cnt, old_cnt, tmp_ID);
                     }
                     tmp_ID = tmp_cnt++;
                 }
@@ -688,11 +701,15 @@ std::pair<std::pair<int, int>, v_type> scanlval(basenode* root, bool isdec){
                     tmp_ID = tmp_cnt++;
                 }
                 else{
-                    if(isdec && !noprint)
+                    int old_cnt = tmp_cnt;
+                    tmp_cnt++;
+                    if(isdec && !noprint){
+                        fprintf(yyout, "var t%d\n",old_cnt);
                         fprintf(yyout, "var t%d\n", tmp_cnt);
+                    }
                     if(!isdec && !noprint){
-                        fprintf(yyout, "t%d = T%d[t%d] * %d\n", tmp_cnt, cur_lval_array[i].first.first, cur_lval_array[i].first.second,var_array[val_tid][i+1]*4);
-                        fprintf(yyout, "t%d = t%d + t%d\n", tmp_cnt, tmp_cnt, tmp_ID);
+                        fprintf(yyout, "t%d = T%d[t%d] * %d\n", old_cnt, cur_lval_array[i].first.first, cur_lval_array[i].first.second,var_array[val_tid][i+1]*4);
+                        fprintf(yyout, "t%d = t%d + t%d\n", tmp_cnt, old_cnt, tmp_ID);
                     }
                     tmp_ID = tmp_cnt++;
                 }
