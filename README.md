@@ -1,6 +1,8 @@
 # sysYCompiler
 3-stage sysY compiler using lex and yacc
 
+sysy2riscv为三部分合在一起之后的效果,可以过function_test,过不了performance test,sysy2eeyore eeyore2tigger tigger2riscv连续使用可能出错，但是可以分别过function test
+
 cd ./sysy2eeyore
 
 ./compiler -S -e input.sy -o output.eeyore
@@ -18,6 +20,7 @@ the current eeyore2tigger has no register allocation at all (all variables store
 别问我为什么不用store，我只是想把功能给过了罢了
 
 提醒一下riscV的return和函数声明时候的addi也要满足int12的要求，否则要先load到s0里处理
+
 
 
 sysY EBNF
