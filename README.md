@@ -1,5 +1,9 @@
 # sysYCompiler
+2021春编译原理实践lab
+
 3-stage sysY compiler using lex and yacc
+
+整个代码是从0开始写的，没有框架（不知道以后会不会改版）
 
 sysy2riscv为三部分合在一起之后的效果,是三阶段合在一起后经过修改得到的,和那三个单阶段的不是完全一样,可以过function_test, performance_test为386s
 
