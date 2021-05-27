@@ -31,6 +31,9 @@ the current eeyore2tigger has no register allocation at all (all variables store
 
 性能测试中的fft有在函数参数直接中使用函数返回值的情况, 因此需要在调用前才param, 而不能一上来一边解析一边param
 
+注意lval可能会产生新的lval
+
+注意全局变量的赋值应该在main函数中，可以在eeyore2tigger或者sysy2eeyore中完成，本仓库中的eeyore2tigger单独文件夹中未处理此情况，但是sysy2riscv中的eeyore2tigger部分进行了处理
 
 sysY EBNF
 
