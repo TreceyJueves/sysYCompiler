@@ -1,7 +1,11 @@
 # sysYCompiler
 3-stage sysY compiler using lex and yacc
 
-sysy2riscv为三部分合在一起之后的效果,可以过function_test,过不了performance test,sysy2eeyore eeyore2tigger tigger2riscv连续使用可能出错，但是可以分别过function test
+sysy2riscv为三部分合在一起之后的效果,是三阶段合在一起后经过修改得到的,和那三个单阶段的不是完全一样,可以过function_test, performance_test为386s
+
+sysy2eeyore eeyore2tigger tigger2riscv连续使用可能出错，但是可以分别过相应的单阶段function test
+
+https://github.com/wangchang327/compiler-lab-test-driver 是一个可以跑本地测试的小工具，将compiler和py文件放到和miniVM及open-test-case文件夹同层的地方，使用wsl或其他linux系统python3 ./test.py e/t/r即可，还需要改minivm的main.cpp之后再编译minivm，具体操作详见链接
 
 cd ./sysy2eeyore
 
@@ -21,6 +25,7 @@ the current eeyore2tigger has no register allocation at all (all variables store
 
 提醒一下riscV的return和函数声明时候的addi也要满足int12的要求，否则要先load到s0里处理
 
+性能测试中的fft有在函数参数直接中使用函数返回值的情况, 因此需要在调用前才param, 而不能一上来一边解析一边param
 
 
 sysY EBNF
@@ -110,3 +115,6 @@ sysY EBNF
     LOrExp        ::= LAndExp | LOrExp "||" LAndExp;
 
     ConstExp      ::= AddExp;
+    
+最后感谢xyf,wyx,wc,lhy,hyt,hxy,lnj,lcw等等同学以及助教MaxXing对此lab的帮助
+痛苦的先驱希望能够帮到后面的同学
