@@ -49,7 +49,7 @@ extern std::pair<std::pair<int, int>, v_type> scannumber(s_basenode*, bool);
 extern std::string scanaddop(s_basenode*, bool);
 extern std::string scanmulop(s_basenode*, bool);
 extern std::string scanunaryop(s_basenode*, bool);
-extern void scanfuncrparams(s_basenode*, bool);
+extern void scanfuncrparams(s_basenode*, bool, std::vector<std::pair<std::pair<int, int>, v_type>>&);
 extern void scanlvalarray(s_basenode*, bool);
 
 void scanblock(s_basenode* , bool, int, int);
@@ -92,7 +92,7 @@ void scanblock(s_basenode* root, bool isdec, int brkpt, int ctnpt){
 
 void scanblockseqitem(s_basenode* root, bool isdec, int brkpt, int ctnpt){
     auto s = root->Son;
-    printf("startscanblockseqitem\n");
+    //printf("startscanblockseqitem\n");
     if(s.size() == 1){
         scanblockitem(s[0], isdec, brkpt, ctnpt);
     }
@@ -107,15 +107,15 @@ void scanblockseqitem(s_basenode* root, bool isdec, int brkpt, int ctnpt){
 }
 
 void scanblockitem(s_basenode* root, bool isdec, int brkpt, int ctnpt){
-    printf("start scan blockitem \n");
+    //printf("start scan blockitem \n");
     auto s = root->Son;
     switch(s[0]->type){
         case _decl:
-            printf("case decl:\n");
+            //printf("case decl:\n");
             s_scandecl(s[0], isdec);
             break;
         case _stmt:
-            printf("case stmt:\n");
+            //printf("case stmt:\n");
             scanstmt(s[0], isdec, brkpt, ctnpt);
             break;
         default:
@@ -131,24 +131,24 @@ void scanstmt(s_basenode* root, bool isdec, int brkpt, int ctnpt){//highly possi
         switch(s[0]->type){
             case _block:
                 layer++;
-                printf("case block\n");
+                //printf("case block\n");
                 scanblock(s[0], isdec, brkpt, ctnpt);
                 layer--;
                 break;
             case _break:
-                printf("case break\n");
+                //printf("case break\n");
                 if(!isdec && !noprint){
                     fprintf(s2eout, "goto l%d\n", brkpt);
                 }
                 break;
             case _continue:
-                printf("case continue\n");
+                //printf("case continue\n");
                 if(!isdec && !noprint){
                     fprintf(s2eout, "goto l%d\n", ctnpt);
                 }
                 break;
             case _return:
-                printf("case return\n");
+                //printf("case return\n");
                 if(!isdec && !noprint){
                     fprintf(s2eout, "return\n");
                 }
@@ -161,11 +161,11 @@ void scanstmt(s_basenode* root, bool isdec, int brkpt, int ctnpt){//highly possi
         }
     }
     else if(s.size() == 2){//case return int
-        printf("case return int\n");
+        //printf("case return int\n");
         if(s[0]->type != _return){
             s2eerror("Stmt Error: wrong type of son, should be return\n");
         }
-        printf("case return int\n");
+        //printf("case return int\n");
         auto ret = scanexp(s[1], isdec);//unfinished ret should be a type of <<int(Tid/tid), int(index)>, v_type>
         if(!isdec && !noprint){
             auto str = exp2str(ret).c_str();
@@ -173,7 +173,7 @@ void scanstmt(s_basenode* root, bool isdec, int brkpt, int ctnpt){//highly possi
         }
     }
     else if(s.size() == 3){//assign
-        printf("case assign\n");
+        //printf("case assign\n");
         auto lval = scanlval(s[0], isdec);
         auto exp = scanexp(s[2],isdec);
         auto str = exp2str(exp);
@@ -184,7 +184,7 @@ void scanstmt(s_basenode* root, bool isdec, int brkpt, int ctnpt){//highly possi
     }
     else if(s.size() == 5){//case while / no else
         if(s[0]->type == _while){
-            printf("case while\n");
+            //printf("case while\n");
             int ctnlb = label_cnt++;//place to go if continue appears, before cond
             int brklb = label_cnt++;//place to go if break appears, after stmt
             int b_true = label_cnt++;//place to go if cond == true
@@ -193,7 +193,7 @@ void scanstmt(s_basenode* root, bool isdec, int brkpt, int ctnpt){//highly possi
                 fprintf(s2eout, "l%d:\n", ctnlb);
             }
             auto cond = scancond(s[2], isdec, b_true, b_false);//can branch part be elliminated?
-            printf("finished scanning cond\n");
+            //printf("finished scanning cond\n");
             auto strcond = exp2str(cond);
             if(!isdec && !noprint){
                 //fprintf(s2eout, "if %s == 0 goto l%d\n", strcond.c_str(), brklb);
@@ -206,7 +206,7 @@ void scanstmt(s_basenode* root, bool isdec, int brkpt, int ctnpt){//highly possi
             }
         }
         else if(s[0]->type == _if){//if without else
-            printf("case if without else\n");
+            //printf("case if without else\n");
             int b_true = label_cnt++;//place to go if cond == true
             int b_false = label_cnt++;//place to go if cond == false
             auto exp = scancond(s[2], isdec, b_true, b_false);
@@ -226,7 +226,7 @@ void scanstmt(s_basenode* root, bool isdec, int brkpt, int ctnpt){//highly possi
         }
     }
     else if(s.size() == 7){//if with else
-        printf("case if with else\n");
+        //printf("case if with else\n");
         int b_if = label_cnt++;
         int b_else = label_cnt++;
         int b_fin = label_cnt++;
@@ -247,15 +247,15 @@ void scanstmt(s_basenode* root, bool isdec, int brkpt, int ctnpt){//highly possi
             fprintf(s2eout,"l%d:\n", b_fin);
     }
     else{
-        printf("Number of sons : %ld\n", s.size());
+        //printf("Number of sons : %ld\n", s.size());
         s2eerror("Stmt Error: wrong number of sons\n");
     }
 }
 
 std::pair<std::pair<int, int>, v_type> scancond(s_basenode* root, bool isdec, int b_true, int b_false){
     auto s = root->Son;
-    printf("start scanning cond\n");
-    printf("exp type: %d\n",root->type);
+    //printf("start scanning cond\n");
+    //printf("exp type: %d\n",root->type);
     if(s.size() == 1){
         return scanlorexp(s[0], isdec, b_true, b_false);
     }
@@ -266,8 +266,8 @@ std::pair<std::pair<int, int>, v_type> scancond(s_basenode* root, bool isdec, in
 }
 std::pair<std::pair<int, int>, v_type> scanlorexp(s_basenode* root, bool isdec, int b_true, int b_false){
     auto s = root->Son;
-    printf("scanning lorexp\n");
-    printf("exp type: %d\n",root->type);
+    //printf("scanning lorexp\n");
+    //printf("exp type: %d\n",root->type);
     if(s.size() == 1){
         return scanlandexp(s[0], isdec, b_true, b_false);
     }
@@ -309,8 +309,8 @@ std::string scanlandop(s_basenode* root, bool isdec){
 
 std::pair<std::pair<int, int>, v_type>scanlandexp(s_basenode* root, bool isdec, int b_true, int b_false){
     auto s = root->Son;
-    printf("scanning landexp\n");
-    printf("exp type: %d\n",root->type);
+    //printf("scanning landexp\n");
+    //printf("exp type: %d\n",root->type);
     if(s.size() == 1){
         return scaneqexp(s[0], isdec, b_true, b_false);
     }
@@ -344,8 +344,8 @@ std::pair<std::pair<int, int>, v_type>scanlandexp(s_basenode* root, bool isdec, 
 
 std::pair<std::pair<int, int>, v_type>scaneqexp(s_basenode* root, bool isdec, int b_true, int b_false){
     auto s = root->Son;
-    printf("scan eqexp\n");
-    printf("exp type: %d\n",root->type);
+    //printf("scan eqexp\n");
+    //printf("exp type: %d\n",root->type);
     if(s.size() == 1){
         return scanrelexp(s[0], isdec, b_true, b_false);
     }
@@ -394,10 +394,10 @@ std::string scaneqop(s_basenode* root, bool isdec){
 
 std::pair<std::pair<int, int>, v_type> scanrelexp(s_basenode* root, bool isdec, int b_true, int b_false){
     auto s = root->Son;
-    printf("scan relexp\n");
-    printf("exp type: %d\n",root->type);
+    //printf("scan relexp\n");
+    //printf("exp type: %d\n",root->type);
     if(s.size() == 1){
-        printf("scan single rel exp\n");
+        //printf("scan single rel exp\n");
         auto exp = scanaddexp(s[0],isdec);
         auto str = exp2str(exp);
         if(!isdec && !noprint){

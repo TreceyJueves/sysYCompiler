@@ -110,7 +110,7 @@ struct s_basenode
     std::string ID;
     s_basenode(enum node_type _type)
     {
-     //   printf("type: %d\n",_type);
+     //   //printf("type: %d\n",_type);
         type = _type;
         Son = std::vector<s_basenode *>();
     }

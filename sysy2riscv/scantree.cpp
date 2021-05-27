@@ -48,7 +48,7 @@ extern std::pair<std::pair<int, int>, v_type> scannumber(s_basenode*, bool);
 extern std::string scanaddop(s_basenode*, bool);
 extern std::string scanmulop(s_basenode*, bool);
 extern std::string scanunaryop(s_basenode*, bool);
-extern void scanfuncrparams(s_basenode*, bool);
+extern void scanfuncrparams(s_basenode*, bool,std::vector<std::pair<std::pair<int, int>, v_type>>&);
 extern void scanlvalarray(s_basenode*, bool);
 
 extern std::vector<std::pair<std::pair<int, int>, v_type>> lval_array;
@@ -95,11 +95,11 @@ void s_scandecl(s_basenode* root, bool isdec){
     auto s = root->Son;
     switch(s[0]->type){
         case _constdecl:
-            printf("constdecl\n");
+            //printf("constdecl\n");
             s_scanconstdecl(s[0], isdec);
             break;
         case _vardecl:
-            printf("vardecl\n");
+            //printf("vardecl\n");
             s_scanvardecl(s[0], isdec);
             break;
         default:
@@ -123,7 +123,7 @@ void s_scanconstdecl(s_basenode* root, bool isdec){
 
 void s_scanvardecl(s_basenode* root, bool isdec){
     auto s = root->Son;    
-    printf("var decl\n");
+    //printf("var decl\n");
     if(s.size()!=2){
         s2eerror("VarDecl Error: wrong number of Sons\n");
     }
@@ -136,9 +136,9 @@ void s_scanvardecl(s_basenode* root, bool isdec){
 
 void s_scanvarseqdef(s_basenode* root, bool isdec){
     auto s = root->Son;
-    //printf("starting varseqdef\n");
+    ////printf("starting varseqdef\n");
     if(s.size()== 1){
-        printf("vardef\n");
+        //printf("vardef\n");
         s_scanvardef(s[0], isdec);
     }
     else if(s.size()==2){
@@ -155,9 +155,9 @@ void s_scanvardef(s_basenode* root, bool isdec){
     auto s = root->Son;
     tmp_array.clear();
     tmp_array_val.clear();
-    printf("starting definin var\n");
+    //printf("starting definin var\n");
     int sizeofvar = scanmddim(s[1], isdec);
-    printf("finished scanning dim\n");
+    //printf("finished scanning dim\n");
     std::string Ident =  s[0]->ID;
     int cur_Tid;
     if(ID2T.find(Ident) == ID2T.end()){//not declared before
@@ -179,7 +179,7 @@ void s_scanvardef(s_basenode* root, bool isdec){
         }
     }
     if(tmp_array.size()==0){//single variable
-        printf("single variable\n");
+        //printf("single variable\n");
         var_type[cur_Tid] = std::make_pair(std::make_pair(cur_Tid, 0), _var);
         if(isdec && !noprint)
             fprintf(s2eout, "var T%d\n", cur_Tid);
@@ -216,18 +216,18 @@ void s_scanvardef(s_basenode* root, bool isdec){
         }
         tmp_array.push_back(1);
         for(int l = 0; l < tmp_array.size(); l++){
-            printf("%d: %d    ", l, tmp_array[l]);
+            //printf("%d: %d    ", l, tmp_array[l]);
         }
-        printf("\n");
+        //printf("\n");
         var_array[cur_Tid] = tmp_array;
     }
 }
 
 void s_scanconstseqdecl(s_basenode* root, bool isdec){
     auto s = root->Son;
-    printf("start scanning const seq decl\n");
+    //printf("start scanning const seq decl\n");
     if(s.size()== 1){
-        printf("single decl\n");
+        //printf("single decl\n");
         s_scanconstdef(s[0], isdec);
     }
     else if(s.size()==2){
@@ -241,11 +241,11 @@ void s_scanconstseqdecl(s_basenode* root, bool isdec){
 }
 
 void s_scanconstdef(s_basenode* root, bool isdec){
-    printf("s_scanconstdef\n");
+    //printf("s_scanconstdef\n");
     auto s = root->Son;
     tmp_array.clear();
     tmp_array_val.clear();
-    printf("%ld\n",s.size());
+    //printf("%ld\n",s.size());
     auto sizeofvar = scanmddim(s[1], isdec);
     std::string str_val = "";
     str_val = s_scanconstinitval(s[3], isdec);
@@ -300,10 +300,10 @@ void s_scanconstdef(s_basenode* root, bool isdec){
 }
 
 int scanmddim(s_basenode* root, bool isdec){
-    printf("start scanning mddim\n");
+    //printf("start scanning mddim\n");
     auto s = root->Son;
     if(s.size()==0){
-        printf("s.size = 0\n");
+        //printf("s.size = 0\n");
         return 1;
     }
     else if(s.size()!=2)
@@ -315,10 +315,10 @@ int scanmddim(s_basenode* root, bool isdec){
 }
 
 std::string s_scanconstinitval(s_basenode* root, bool isdec){
-    printf("scan constinit val\n");
+    //printf("scan constinit val\n");
     auto s = root->Son;
     if(s.size() == 1){
-        printf("single exp\n");
+        //printf("single exp\n");
         auto val = scanexp(s[0], isdec);
         if(val.second != _const_var){
             s2eerror("ConstInitVal Error: should be s_initialized with constexp\n");
@@ -336,14 +336,14 @@ std::string s_scanconstinitval(s_basenode* root, bool isdec){
 }
 
 std::string s_scaninitval(s_basenode* root, bool isdec){
-    printf("s_scaninitval\n");
-    printf("type: %d\n", root->type);
+    //printf("s_scaninitval\n");
+    //printf("type: %d\n", root->type);
     auto s = root->Son;
-    printf("initval sons :%ld\n", s.size());
+    //printf("initval sons :%ld\n", s.size());
     if(s.size() == 1){
         auto val = scanexp(s[0], isdec);
         tmp_array_val.push_back(val);
-        printf("%d:%d\n", val.first.first, val.first.second);
+        //printf("%d:%d\n", val.first.first, val.first.second);
         return "n";
     }
     else if(s.size()==2){
@@ -356,8 +356,8 @@ std::string s_scaninitval(s_basenode* root, bool isdec){
 }
 
 std::string scanseqinitval(s_basenode* root, bool isdec){
-    printf("scan seq initval\n");
-    printf("type: %d\n", root->type);
+    //printf("scan seq initval\n");
+    //printf("type: %d\n", root->type);
     auto s = root->Son;
     if(s.size() == 1){
         return s_scaninitval(s[0], isdec);
@@ -370,7 +370,7 @@ std::string scanseqinitval(s_basenode* root, bool isdec){
 }
 
 std::string s_scanconstseqinitval(s_basenode* root, bool isdec){
-    printf("scan constseq init val\n");
+    //printf("scan constseq init val\n");
     auto s = root->Son;
     if(s.size() == 1){
         return s_scanconstinitval(s[0], isdec);
@@ -391,10 +391,10 @@ void scantree(s_basenode* root){
             case _decl:{
                 noprint = false;
                 s_scandecl(it, true);
-                printf("decl\n");
+                //printf("decl\n");
                 break;}
             case _funcdef:{
-                printf("funcdef\n");
+                //printf("funcdef\n");
                 noprint = true;
                 s_scanfuncdef(it, false);
                 break;}
@@ -409,12 +409,12 @@ void scantree(s_basenode* root){
     for(auto it: root->Son){
         switch(it->type){
             case _decl:{
-                printf("decl2\n");
+                //printf("decl2\n");
                 noprint = false;
                 s_scandecl(it, false);
                 break;}
             case _funcdef:{
-                printf("funcdef2\n");
+                //printf("funcdef2\n");
                 noprint = false;
                 auto old_tmp_cnt = tmp_cnt;
                 auto old_var_cnt = var_cnt;
@@ -510,13 +510,13 @@ void s_scanfuncdef(s_basenode* root, bool isdec){
     }
     layer++;
     if(s.size() == 6){//has parameter
-        printf("func has param\n");
+        //printf("func has param\n");
         scanfuncfparams(s[3], isdec);
     }
     if(isdec && !noprint){
         fprintf(s2eout, "f_%s [%ld]\n", cur_funcID.c_str(), func_param.size());
     }
-    printf("start scanning block\n");
+    //printf("start scanning block\n");
     scanblock(s.back(), isdec, -1, -1);
     layer--;
 //adding default return in case the programmer forgets to return, can be ignored if the program is written correctly
@@ -545,7 +545,7 @@ void scanfuncfparams(s_basenode* root, bool isdec){
 }
 
 void scanfuncfparam(s_basenode* root, bool isdec){
-    printf("scan f param\n");
+    //printf("scan f param\n");
     auto s = root->Son;
     std::string param_ID = s[1]->ID;
     if(s.size() == 2){

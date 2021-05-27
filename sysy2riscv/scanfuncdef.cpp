@@ -65,6 +65,9 @@ void scanfunctiondef(e_basenode* root){
                     if(reg_num != 0){
                         regs[reg_num] = 0;
                     }
+                    if(reg_num2 != 0){
+                        regs[reg_num2] = 0;
+                    }
                 }
                 else{
                     int reg_num = get_reg();
@@ -159,7 +162,7 @@ void scanfunctionend(e_basenode* root){
 }
 
 void scanstatements(e_basenode* root){
-    printf("start scanning statements\n");
+    //printf("start scanning statements\n");
     auto s = root->Son;
     if(s.size() == 1){
         scanstatement(s[0]);
@@ -167,7 +170,7 @@ void scanstatements(e_basenode* root){
     else if(s.size() == 2){
         scanstatements(s[0]);
         auto grand_son = s[1]->Son;
-        printf("grandson type: %d\n",grand_son[0]->type);
+        //printf("grandson type: %d\n",grand_son[0]->type);
         scanstatement(s[1]);
     }
     else{
@@ -176,7 +179,7 @@ void scanstatements(e_basenode* root){
 }
 
 void scanstatement(e_basenode* root){
-    printf("start scanning statement\n");
+    //printf("start scanning statement\n");
     auto s = root->Son;
     if(s.size() == 1){
         if(s[0]->type == _expression){
@@ -195,7 +198,7 @@ void scanstatement(e_basenode* root){
 }
 
 void scanexpression(e_basenode* root){
-    printf("start scanning expression\n");
+    //printf("start scanning expression\n");
     auto s = root->Son;
     if(s.size() == 5){//VARIABLE ASSIGN RightValue BinOp RightValue
         std::string var_name = s[0]->ID;
@@ -323,7 +326,7 @@ void scanexpression(e_basenode* root){
     }
     else if(s.size() == 2){//VariableAssign GotoLabel ParamRightValue CallFunc ReturnRightValue
         if(s[0]->type == _variable){//case Variable assign Right Value
-            printf("case Variable assign Right Value\n");
+            //printf("case Variable assign Right Value\n");
             std::string var_name = s[0]->ID;
             int reg_l = -1;
             if(s[1]->Son[0]->type == _variable){
@@ -358,7 +361,7 @@ void scanexpression(e_basenode* root){
             auto reg_name = trans_reg(reg_num);
             int var_local = ID2Var[var_name][var_lay].is_local;
             int var_place = ID2Var[var_name][var_lay].stack_place;
-            printf("var place: %d\n",var_place);
+            //printf("var place: %d\n",var_place);
             if(var_local == 0){//global variable
                 std::string output1 = "loadaddr v"+std::to_string(var_place)+" "+ reg_name+"\n";
                 fprintf(e2tout, "%s",output1.c_str());
@@ -411,7 +414,7 @@ void scanexpression(e_basenode* root){
             fprintf(e2tout, "%s", output.c_str());
         }
         else if(s[0]->type == _return){//case return rightvalue
-            printf("case : return rightvalue\n");
+            //printf("case : return rightvalue\n");
             int ret_reg = -1;
             if(s[1]->Son[0]->type == _variable){
                 auto sname = s[1]->Son[0]->ID;
@@ -433,24 +436,24 @@ void scanexpression(e_basenode* root){
                 std::string output = "a0 = "+ret_name+"\n";
                 fprintf(e2tout, "%s", output.c_str());
             }
-            printf("return here2\n");
+            //printf("return here2\n");
             fprintf(e2tout,"return\n");
             if(ret_reg != 0)
                 regs[ret_reg] = 0;
         }
         else{
-            printf("sontype: %d\n",s[0]->type);
+            //printf("sontype: %d\n",s[0]->type);
             e2terror("Expression Error 2: Wrong type of sons\n");
         }
     }
     else if(s.size() == 1){//case return / label
-        printf("case expression size1:\n");
+        //printf("case expression size1:\n");
         if(s[0]->type == _return){
-            printf("return here\n");
+            //printf("return here\n");
             fprintf(e2tout, "return\n");
         }
         else if(s[0]->type == _label){
-            printf("case label:\n");
+            //printf("case label:\n");
             auto str = s[0]->ID;
             fprintf(e2tout,"%s:\n", str.c_str());
         }
@@ -495,6 +498,9 @@ void scanexpression(e_basenode* root){
         std::string output2 = reg_name + " [0] = a0"+ "\n";
         fprintf(e2tout, "%s", output2.c_str());
         e_param_cnt = 0;
+        if(reg_num != 0){
+            regs[reg_num] = 0;
+        }
     }
     else if(s.size() == 6){
     //unfinished
@@ -513,12 +519,12 @@ void scanexpression(e_basenode* root){
                 regs[reg_r] = 0;
         }
         else if(s[4]->type == _assign){//VARIABLE LBRK RightValue RBRK ASSIGN RightValue
-            printf("VARIABLE LBRK RightValue RBRK ASSIGN RightValue\n");
-            printf("%d, %d, %d, %d, %d, %d\n",s[0]->type, s[1]->type, s[2]->type, s[3]->type, s[4]->type, s[5]->type);
+            //printf("VARIABLE LBRK RightValue RBRK ASSIGN RightValue\n");
+            //printf("%d, %d, %d, %d, %d, %d\n",s[0]->type, s[1]->type, s[2]->type, s[3]->type, s[4]->type, s[5]->type);
             std::string var_name = s[0]->ID;
-            printf("here\n");
+            //printf("here\n");
             auto reg_l = scanrightvalue(s[2]);
-            printf("here2\n");
+            //printf("here2\n");
             auto reg_r = scanrightvalue(s[5]);
             std::string name_r = trans_reg(reg_r);
             std::string name_l = trans_reg(reg_l);//always send reg for convenience
@@ -542,12 +548,12 @@ void scanexpression(e_basenode* root){
                 fprintf(e2tout, "%s",output1.c_str());
             }
             else if(var_local == 1 && var_name[0] != 'p'){//local variable
-                printf("array not param\n");
+                //printf("array not param\n");
                 std::string output1 = "loadaddr " + std::to_string(var_place)+" "+ reg_name+"\n";
                 fprintf(e2tout, "%s", output1.c_str());
             }
             else if(var_local == 1 && var_name[0] == 'p'){
-                printf( "param array\n");
+                //printf( "param array\n");
                 std::string output1 = "load " + std::to_string(var_place)+" "+ reg_name+"\n";
                 fprintf(e2tout, "%s", output1.c_str());
             }
@@ -566,7 +572,7 @@ void scanexpression(e_basenode* root){
                 regs[reg_l] = 0;
         }
         else if(s[1]->type == _assign){//case VARIABLE ASSIGN VARIABLE LBRK RightValue RBRK
-            printf("case VARIABLE ASSIGN VARIABLE LBRK RightValue RBRK\n");
+            //printf("case VARIABLE ASSIGN VARIABLE LBRK RightValue RBRK\n");
             std::string var_name_l = s[0]->ID;
             std::string var_name_r = s[2]->ID;
             auto reg_l = scanrightvalue(s[4]);
@@ -618,12 +624,12 @@ void scanexpression(e_basenode* root){
                 fprintf(e2tout, "%s",output1.c_str());
             }
             else if(var_local_r == 1 && var_name_r[0] != 'p'){//local variable
-                printf("array not param\n");
+                //printf("array not param\n");
                 std::string output1 = "loadaddr " + std::to_string(var_place_r)+" "+ reg_name_r+"\n";
                 fprintf(e2tout, "%s", output1.c_str());
             }
             else if(var_local_r == 1 && var_name_r[0] == 'p'){//local variable
-                printf("param array\n");
+                //printf("param array\n");
                 std::string output1 = "load " + std::to_string(var_place_r)+" "+ reg_name_r+"\n";
                 fprintf(e2tout, "%s", output1.c_str());
             }
@@ -770,7 +776,7 @@ std::string e_scanlogicop(e_basenode* root){
 
 int scanrightvalue(e_basenode* root){
     auto s = root->Son;
-    printf("rightvalue type: %d\n",root->type);
+    //printf("rightvalue type: %d\n",root->type);
     if(s.size() == 1){
         if(s[0]->type == _variable){
             std::string var_name = s[0]->ID;
@@ -816,7 +822,7 @@ int scanrightvalue(e_basenode* root){
         }
     }
     else{
-        printf("num of sons: %ld\n",s.size());
+        //printf("num of sons: %ld\n",s.size());
         e2terror("RightValue Error: wrong number of sons\n");
         return -1;
     }

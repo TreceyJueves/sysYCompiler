@@ -27,6 +27,7 @@ int main(int argc, char* argv[]){
 	}
     s2e(sysy_in, eeyore_out);
     e2t(eeyore_out, tigger_out);
+    //e2t(eeyore_out, r_out);
     t2r(tigger_out, r_out);
     return 0;
 }

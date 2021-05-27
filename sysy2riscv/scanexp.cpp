@@ -40,7 +40,7 @@ std::pair<std::pair<int, int>, v_type> scannumber(s_basenode*, bool);
 std::string scanaddop(s_basenode*, bool);
 std::string scanmulop(s_basenode*, bool);
 std::string scanunaryop(s_basenode*, bool);
-void scanfuncrparams(s_basenode*, bool);
+void scanfuncrparams(s_basenode*, bool, std::vector<std::pair<std::pair<int, int>, v_type>>&);
 void scanlvalarray(s_basenode*, bool, std::vector<std::pair<std::pair<int, int>, v_type>>&);
 
 extern std::string exp2str(std::pair<std::pair<int,int>, v_type>);
@@ -69,8 +69,8 @@ int scanconstexp(s_basenode* root, bool isdec){
 }
 std::pair<std::pair<int, int>, v_type> scanaddexp(s_basenode* root, bool isdec){
     auto s = root->Son;
-    printf("scanning add exp\n");
-    printf("exp type: %d\n",root->type);
+    //printf("scanning add exp\n");
+    //printf("exp type: %d\n",root->type);
     auto ret = std::make_pair(std::make_pair(0,0), _null);
     if(s.size() == 1)
         return scanmulexp(s[0], isdec);
@@ -331,8 +331,8 @@ std::pair<std::pair<int, int>, v_type> scanmulexp(s_basenode* root, bool isdec){
 
 std::pair<std::pair<int, int>, v_type> scanunaryexp(s_basenode* root, bool isdec){
     auto s = root->Son;
-    printf("scanning unaryexp\n");
-    printf("exp type: %d\n",root->type);
+    //printf("scanning unaryexp\n");
+    //printf("exp type: %d\n",root->type);
     if(s.size() == 1){
         return scanprimaryexp(s[0], isdec);
     }  
@@ -386,33 +386,8 @@ std::pair<std::pair<int, int>, v_type> scanunaryexp(s_basenode* root, bool isdec
     }
     else if(s.size() == 3){//function without param
         //remember to add libfunction
-        printf("function without param\n");
+        //printf("function without param\n");
         std::string func_ID = s[0]->ID;
-        if(func_returnvoid.find(func_ID) == func_returnvoid.end()) {
-            s2eerror("UnaryExp Error: Function Undefined\n");
-            return std::make_pair(std::make_pair(0,0),_null);
-        }
-        else if(func_returnvoid[func_ID] == true){
-            printf("call function without return val\n");
-            if(!isdec && !noprint)
-                fprintf(s2eout, "call f_%s\n", func_ID.c_str());
-            return std::make_pair(std::make_pair(0,0),_null);
-        } 
-        else{
-            printf("call function with return val\n");
-            if(isdec && !noprint)
-                fprintf(s2eout, "var t%d\n", tmp_cnt);
-            if(!isdec && !noprint)
-                fprintf(s2eout, "t%d = call f_%s\n", tmp_cnt, func_ID.c_str());
-            int tt = tmp_cnt++;
-            return std::make_pair(std::make_pair(tt,0),_tmp_var);
-        }  
-    }
-    else if(s.size() == 4){
-        //remember to add libfunction
-        printf("function with param\n");
-        std::string func_ID = s[0]->ID;
-        scanfuncrparams(s[2], isdec);
         if(func_returnvoid.find(func_ID) == func_returnvoid.end()) {
             s2eerror("UnaryExp Error: Function Undefined\n");
             return std::make_pair(std::make_pair(0,0),_null);
@@ -425,13 +400,52 @@ std::pair<std::pair<int, int>, v_type> scanunaryexp(s_basenode* root, bool isdec
             return std::make_pair(std::make_pair(0,0),_null);;
         }
         else if(func_returnvoid[func_ID] == true){
-            printf("call function without return val\n");
+            //printf("call function without return val\n");
+            if(!isdec && !noprint)
+                fprintf(s2eout, "call f_%s\n", func_ID.c_str());
+            return std::make_pair(std::make_pair(0,0),_null);
+        } 
+        else{
+            //printf("call function with return val\n");
+            if(isdec && !noprint)
+                fprintf(s2eout, "var t%d\n", tmp_cnt);
+            if(!isdec && !noprint)
+                fprintf(s2eout, "t%d = call f_%s\n", tmp_cnt, func_ID.c_str());
+            int tt = tmp_cnt++;
+            return std::make_pair(std::make_pair(tt,0),_tmp_var);
+        }  
+    }
+    else if(s.size() == 4){//function with param
+        //remember to add libfunction
+        //printf("function with param\n");
+        std::string func_ID = s[0]->ID;
+        auto r_tmp_array = std::vector<std::pair<std::pair<int,int>,v_type> >();//unfinished
+        scanfuncrparams(s[2], isdec, r_tmp_array);
+        for(int i = 0; i < r_tmp_array.size(); i++){
+            if(!noprint && !isdec){
+                auto str = exp2str(r_tmp_array[i]);
+                fprintf(s2eout, "param %s\n", str.c_str());
+            }
+        }
+        if(func_returnvoid.find(func_ID) == func_returnvoid.end()) {
+            s2eerror("UnaryExp Error: Function Undefined\n");
+            return std::make_pair(std::make_pair(0,0),_null);
+        }
+    /*    else if(func_ID == "starttime"||func_ID == "stoptime"){
+            if(!noprint && !isdec){
+                fprintf(s2eout, "param %d\n", lineNo);
+                fprintf(s2eout, "call f__sysy_%s\n", func_ID.c_str());
+            }
+            return std::make_pair(std::make_pair(0,0),_null);;
+        }*/
+        else if(func_returnvoid[func_ID] == true){
+            //printf("call function without return val\n");
             if(!isdec&& !noprint)
                 fprintf(s2eout, "call f_%s\n", func_ID.c_str());
             return std::make_pair(std::make_pair(0,0),_null);
         } 
         else{
-            printf("call function with return val\n");
+            //printf("call function with return val\n");
             if(isdec && !noprint)
                 fprintf(s2eout, "var t%d\n", tmp_cnt);
             if(!isdec && !noprint)
@@ -446,22 +460,25 @@ std::pair<std::pair<int, int>, v_type> scanunaryexp(s_basenode* root, bool isdec
     }
 }
 
-void scanfuncrparams(s_basenode* root, bool isdec){
+void scanfuncrparams(s_basenode* root, bool isdec,std::vector<std::pair<std::pair<int, int>, v_type>>& r_tmp_array){
     auto s = root->Son;
     if(s.size() == 1){
         //problem val array 传参!!! 记住把val array的size传过去！
         auto exp = scanexp(s[0], isdec);
         if(exp.second == _const_var){
-            if(!isdec && !noprint)
-                fprintf(s2eout, "param %d\n", exp.first.second);
+           // if(!isdec && !noprint)
+           //     fprintf(s2eout, "param %d\n", exp.first.second);
+           r_tmp_array.push_back(exp);
         }
         else if(exp.second == _tmp_var){
-            if(!isdec && !noprint)
-                fprintf(s2eout, "param t%d\n", exp.first.first);
+           // if(!isdec && !noprint)
+           //     fprintf(s2eout, "param t%d\n", exp.first.first);
+           r_tmp_array.push_back(exp);
         }
         else if(exp.second == _func_var || exp.second == _func_var_array){
-            if(!isdec && !noprint)
-                fprintf(s2eout, "param p%d\n", exp.first.first);
+           // if(!isdec && !noprint)
+           //     fprintf(s2eout, "param p%d\n", exp.first.first);
+           r_tmp_array.push_back(exp);
         }
         else{
             if(isdec && !noprint){
@@ -469,34 +486,40 @@ void scanfuncrparams(s_basenode* root, bool isdec){
             }
             if(!isdec && !noprint){
                 fprintf(s2eout, "t%d = T%d\n", tmp_cnt, exp.first.first);
-                fprintf(s2eout, "param t%d\n", tmp_cnt);
-
+            //    fprintf(s2eout, "param t%d\n", tmp_cnt);
             }
+            auto ret = std::make_pair(std::make_pair(tmp_cnt,0),_tmp_var);
+            r_tmp_array.push_back(ret);
             tmp_cnt++;
         }
     }
     else if(s.size() == 3){
-        scanfuncrparams(s[0], isdec);
+        scanfuncrparams(s[0], isdec, r_tmp_array);
         auto exp = scanexp(s[2], isdec);
         if(exp.second == _const_var){
-            if(!isdec && !noprint)
-                fprintf(s2eout, "param %d\n", exp.first.second);
+           // if(!isdec && !noprint)
+           //     fprintf(s2eout, "param %d\n", exp.first.second);
+            r_tmp_array.push_back(exp);
         }
         else if(exp.second == _tmp_var){
-            if(!isdec && !noprint)
-                fprintf(s2eout, "param t%d\n", exp.first.first);
+           // if(!isdec && !noprint)
+            //    fprintf(s2eout, "param t%d\n", exp.first.first);
+            r_tmp_array.push_back(exp);
         }
         else if(exp.second == _func_var || exp.second == _func_var_array){
-            if(!isdec && !noprint)
-                fprintf(s2eout, "param p%d\n", exp.first.first);
+  //  if(!isdec && !noprint)
+             //   fprintf(s2eout, "param p%d\n", exp.first.first);
+             r_tmp_array.push_back(exp);
         }
         else{
             if(isdec && !noprint)
                 fprintf(s2eout,"var t%d\n", tmp_cnt);
             if(!isdec && !noprint){
                 fprintf(s2eout,"t%d = T%d\n", tmp_cnt, exp.first.first);
-                fprintf(s2eout, "param t%d\n", tmp_cnt);
+            //    fprintf(s2eout, "param t%d\n", tmp_cnt);
             }
+            auto ret = std::make_pair(std::make_pair(tmp_cnt,0),_tmp_var);
+            r_tmp_array.push_back(ret);
             tmp_cnt++;
         }
     }
@@ -508,9 +531,9 @@ void scanfuncrparams(s_basenode* root, bool isdec){
 
 std::pair<std::pair<int, int>, v_type> scanprimaryexp(s_basenode* root, bool isdec){
     auto s = root->Son;
-    printf("scanning primaryexp\n");
-    printf("exp type: %d\n",root->type);
-    printf("num of sons: %ld\n", s.size());
+    //printf("scanning primaryexp\n");
+    //printf("exp type: %d\n",root->type);
+    //printf("num of sons: %ld\n", s.size());
     if(s.size() == 3){
         return scanexp(s[1], isdec);
     }
@@ -568,7 +591,7 @@ std::pair<std::pair<int, int>, v_type> scanprimaryexp(s_basenode* root, bool isd
             }
         }
         else{
-            printf("%d\n", s[0]->type);
+            //printf("%d\n", s[0]->type);
             s2eerror("PrimaryExp Error: wrong type of son\n");
             return std::make_pair(std::make_pair(0,0), _null);
         }
@@ -580,11 +603,11 @@ std::pair<std::pair<int, int>, v_type> scanprimaryexp(s_basenode* root, bool isd
 }
 
 std::pair<std::pair<int, int>, v_type> scanlval(s_basenode* root, bool isdec){
-    printf("scan lval\n");
-    printf("type: %d\n", root->type);
+    //printf("scan lval\n");
+    //printf("type: %d\n", root->type);
     auto cur_lval_array = std::vector<std::pair<std::pair<int, int>, v_type>>();
     auto s = root->Son;
-    printf("number of sons: %ld\n", s.size());
+    //printf("number of sons: %ld\n", s.size());
     std::string lval_ID = s[0]->ID;
     scanlvalarray(s[1], isdec, cur_lval_array);
     int cur_lay = layer;
@@ -596,9 +619,9 @@ std::pair<std::pair<int, int>, v_type> scanlval(s_basenode* root, bool isdec){
     while(ID2T[lval_ID].find(cur_lay) == ID2T[lval_ID].end() && cur_lay >= 0)
         cur_lay--;
     int val_tid = ID2T[lval_ID][cur_lay];
-    printf("val_tid:%d, type:%d\n", val_tid, var_type[val_tid].second);
+    //printf("val_tid:%d, type:%d\n", val_tid, var_type[val_tid].second);
     if(cur_lval_array.size() == 0){
-        printf("lval_array.size: %ld\n", cur_lval_array.size());
+        //printf("lval_array.size: %ld\n", cur_lval_array.size());
         auto res = var_type[val_tid];
         if(res.second == _func_var_array || res.second == _var_array || res.second == _const_var_array)
             res.first.second = -1;
@@ -606,19 +629,19 @@ std::pair<std::pair<int, int>, v_type> scanlval(s_basenode* root, bool isdec){
     }
 
     else{
-        printf("lval is array\n");
+        //printf("lval is array\n");
         int index = 0;
         int tmp_ID = -1;
-        printf("lval_array.size: %ld\n", cur_lval_array.size());
+        //printf("lval_array.size: %ld\n", cur_lval_array.size());
         for(int i = 0; i < cur_lval_array.size(); i++){
             if(cur_lval_array[i].second == _const_var){
-                printf("constvar\n");
-                printf("%d, %d\n",cur_lval_array[i].first.second,var_array[val_tid][i+1]);
+                //printf("constvar\n");
+                //printf("%d, %d\n",cur_lval_array[i].first.second,var_array[val_tid][i+1]);
                 index += cur_lval_array[i].first.second*var_array[val_tid][i+1];
             }
             else if(cur_lval_array[i].second == _var || cur_lval_array[i].second == _tmp_var ){
-                printf("var\n");
-                printf("%d, %d\n",cur_lval_array[i].first.first,var_array[val_tid][i+1]);
+                //printf("var\n");
+                //printf("%d, %d\n",cur_lval_array[i].first.first,var_array[val_tid][i+1]);
                 char c = 'T';
                 if(cur_lval_array[i].second == _tmp_var)
                     c = 't';
@@ -740,9 +763,9 @@ std::pair<std::pair<int, int>, v_type> scanlval(s_basenode* root, bool isdec){
 
 void scanlvalarray(s_basenode* root, bool isdec, std::vector<std::pair<std::pair<int, int>, v_type>>& cur_lval_array){
     auto s = root->Son;
-    printf("scanlvalarray\n");
-    printf("type:%d\n",root->type);
-    printf("number of sons: %ld\n", s.size());
+    //printf("scanlvalarray\n");
+    //printf("type:%d\n",root->type);
+    //printf("number of sons: %ld\n", s.size());
     if(s.size() == 0){
         return;
     }
@@ -760,9 +783,9 @@ void scanlvalarray(s_basenode* root, bool isdec, std::vector<std::pair<std::pair
 
 std::pair<std::pair<int, int>, v_type> scannumber(s_basenode* root, bool isdec){
     auto s = root->Son;
-    printf("scan number\n");
-    printf("type: %d\n", root->type);
-    printf("number of sons: %ld\n", s.size());
+    //printf("scan number\n");
+    //printf("type: %d\n", root->type);
+    //printf("number of sons: %ld\n", s.size());
     if(s.size() == 1){
         int num = s[0]->val;
         return std::make_pair(std::make_pair(0, num), _const_var);

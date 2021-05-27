@@ -45,7 +45,7 @@ struct t_basenode
     std::string ID;
     t_basenode(enum t_node_type _type)
     {
-      //  printf("type: %d\n",_type);
+      //  //printf("type: %d\n",_type);
         type = _type;
         Son = std::vector<t_basenode *>();
     }

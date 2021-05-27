@@ -51,14 +51,14 @@ std::string trans_reg(int i){
     if(i <=27 && i >= 20){
         return "a"+std::to_string(i-20);
     }
-    printf("%d",i);
-    e2terror("illigal register\n");
+    //printf("%d",i);
+    e2terror("illegal register\n");
     return "";
 }
 
 void scandeclaration(e_basenode* root){
     //this part + intialization have trouble
-    printf("start scanning declaration\n");
+    //printf("start scanning declaration\n");
     auto s = root->Son;        
     auto id_name = s.back()->ID;        
     var_info vars;
@@ -94,7 +94,7 @@ void scandeclaration(e_basenode* root){
     else{
         vars.is_local = 1;
         if(s.size() == 1){
-            printf("declaration 1 here\n");
+            //printf("declaration 1 here\n");
             vars.is_array = 0;
             vars.stack_place = var_in_func++;
             vars.place = 0;
@@ -105,7 +105,7 @@ void scandeclaration(e_basenode* root){
             ID2Var[id_name][e_curlayer] = vars;
         }
         if(s.size() == 2){
-            printf("declaration 2 here\n");
+            //printf("declaration 2 here\n");
             int num = s[0]->val;
             vars.is_array = 1;
             vars.stack_place = var_in_func;
@@ -122,7 +122,7 @@ void scandeclaration(e_basenode* root){
 }
 
 void scaninitialization(e_basenode* root){
-    printf("start scanning initialization\n");
+    //printf("start scanning initialization\n");
     auto s = root->Son;
     if(s.size() == 2){//single variable
         auto var_name = s[0]->ID;
@@ -201,7 +201,7 @@ void e_scantree(e_basenode* root){
                 break;
             case _initialization:
                 e_curplace = 0;
-                printf("scanning initialization\n");
+                //printf("scanning initialization\n");
                 scaninitialization(it);
                 break;
             case _functiondef:
