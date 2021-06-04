@@ -1,0 +1,462 @@
+var T0
+var T1
+var T8
+var 8388608 T9
+var 8388608 T10
+var 8388608 T11
+var 8388608 T12
+T0 = 998244353
+f_multiply [2]
+var t0
+var t1
+var t2
+var T4
+var t3
+var t4
+var t5
+var t6
+var t7
+var t8
+var t9
+var t10
+t0 = p1 == 0
+if t0 != 0 goto l0
+if t0 == 0 goto l1
+l0:
+return 0
+l1:
+t1 = p1 == 1
+if t1 != 0 goto l2
+if t1 == 0 goto l3
+l2:
+t2 = p0 % 998244353
+return t2
+l3:
+t3 = p1 / 2
+param p0
+param t3
+t4 = call f_multiply
+T4 = t4
+t5 = T4 + T4
+t6 = t5 % 998244353
+T4 = t6
+t7 = p1 % 2
+t8 = t7 == 1
+if t8 != 0 goto l4
+if t8 == 0 goto l5
+l4:
+t9 = T4 + p0
+t10 = t9 % 998244353
+return t10
+goto l6
+l5:
+return T4
+l6:
+end f_multiply
+f_power [2]
+var t11
+var T7
+var t12
+var t13
+var t14
+var t15
+var t16
+var t17
+var t18
+var t19
+var t20
+t11 = p1 == 0
+if t11 != 0 goto l7
+if t11 == 0 goto l8
+l7:
+return 1
+l8:
+t12 = p1 / 2
+param p0
+param t12
+t13 = call f_power
+T7 = t13
+t14 = T7
+t15 = T7
+param t14
+param t15
+t16 = call f_multiply
+T7 = t16
+t17 = p1 % 2
+t18 = t17 == 1
+if t18 != 0 goto l9
+if t18 == 0 goto l10
+l9:
+t19 = T7
+param t19
+param p0
+t20 = call f_multiply
+return t20
+goto l11
+l10:
+return T7
+l11:
+end f_power
+T8 = 2097152
+f_memmove [4]
+var T17
+var t21
+var t22
+var t23
+var t24
+var t25
+var t26
+T17 = 0
+l12:
+t21 = T17 < p3
+if t21 != 0 goto l14
+if t21 == 0 goto l13
+l14:
+t22 = p1 + T17
+t23 = t22 * 4
+t24 = T17 * 4
+t25 = p2[t24]
+p0[t23] = t25
+t26 = T17 + 1
+T17 = t26
+goto l12
+l13:
+return T17
+end f_memmove
+f_fft [4]
+var t27
+var T22
+var t28
+var t29
+var t30
+var t31
+var t32
+var t33
+var t34
+var t35
+var t36
+var t37
+var t38
+var t39
+var t40
+var t41
+var t42
+var t43
+var t44
+var t45
+var t46
+var t47
+var t48
+var t49
+var t50
+var t51
+var t52
+var t53
+var t54
+var t55
+var t56
+var T23
+var t57
+var t58
+var T24
+var t59
+var t60
+var t61
+var T25
+var t62
+var t63
+var t64
+var t65
+var t66
+var t67
+var t68
+var t69
+var t70
+var t71
+var t72
+var t73
+var t74
+var t75
+var t76
+var t77
+var t78
+var t79
+var t80
+var t81
+var t82
+var t83
+var t84
+var t85
+var t86
+t27 = p2 == 1
+if t27 != 0 goto l15
+if t27 == 0 goto l16
+l15:
+return 1
+l16:
+T22 = 0
+l17:
+t28 = T22 < p2
+if t28 != 0 goto l19
+if t28 == 0 goto l18
+l19:
+t29 = T22 % 2
+t30 = t29 == 0
+if t30 != 0 goto l20
+if t30 == 0 goto l21
+l20:
+t31 = T22 / 2
+t32 = t31 * 4
+t33 = T22 + p1
+t34 = t33 * 4
+t35 = p0[t34]
+T9[t32] = t35
+goto l22
+l21:
+t36 = p2 / 2
+t37 = T22 / 2
+t38 = t36 + t37
+t39 = t38 * 4
+t40 = T22 + p1
+t41 = t40 * 4
+t42 = p0[t41]
+T9[t39] = t42
+l22:
+t43 = T22 + 1
+T22 = t43
+goto l17
+l18:
+t44 = p0
+t45 = T9
+param t44
+param p1
+param t45
+param p2
+t46 = call f_memmove
+t47 = p0
+t48 = p2 / 2
+param p3
+param p3
+t49 = call f_multiply
+param t47
+param p1
+param t48
+param t49
+t50 = call f_fft
+t51 = p0
+t52 = p2 / 2
+t53 = p1 + t52
+t54 = p2 / 2
+param p3
+param p3
+t55 = call f_multiply
+param t51
+param t53
+param t54
+param t55
+t56 = call f_fft
+T22 = 0
+T23 = 1
+l23:
+t57 = p2 / 2
+t58 = T22 < t57
+if t58 != 0 goto l25
+if t58 == 0 goto l24
+l25:
+t59 = p1 + T22
+t60 = t59 * 4
+t61 = p0[t60]
+T24 = t61
+t62 = p1 + T22
+t63 = p2 / 2
+t64 = t62 + t63
+t65 = t64 * 4
+t66 = p0[t65]
+T25 = t66
+t67 = p1 + T22
+t68 = t67 * 4
+t69 = T23
+t70 = T25
+param t69
+param t70
+t71 = call f_multiply
+t72 = T24 + t71
+t73 = t72 % 998244353
+p0[t68] = t73
+t74 = p1 + T22
+t75 = p2 / 2
+t76 = t74 + t75
+t77 = t76 * 4
+t78 = T23
+t79 = T25
+param t78
+param t79
+t80 = call f_multiply
+t81 = T24 - t80
+t82 = t81 + 998244353
+t83 = t82 % 998244353
+p0[t77] = t83
+t84 = T23
+param t84
+param p3
+t85 = call f_multiply
+T23 = t85
+t86 = T22 + 1
+T22 = t86
+goto l23
+l24:
+return 0
+end f_fft
+f_main [0]
+var T26
+var t87
+var t88
+var T27
+var t89
+var t90
+var t91
+var t92
+var t93
+var t94
+var t95
+var t96
+var t97
+var t98
+var t99
+var t100
+var t101
+var t102
+var t103
+var t104
+var T28
+var t105
+var t106
+var t107
+var t108
+var t109
+var t110
+var t111
+var t112
+var t113
+var t114
+var t115
+var t116
+var t117
+var t118
+var t119
+var t120
+var t121
+var t122
+var t123
+var t124
+var t125
+var t126
+var t127
+var t128
+var t129
+t87 = T10
+param t87
+t88 = call f_getarray
+T26 = t88
+t89 = T11
+param t89
+t90 = call f_getarray
+T27 = t90
+param 82
+call f__sysy_starttime
+T1 = 1
+l26:
+t91 = T26 + T27
+t92 = t91 - 1
+t93 = T1 < t92
+if t93 != 0 goto l28
+if t93 == 0 goto l27
+l28:
+t94 = T1 * 2
+T1 = t94
+goto l26
+l27:
+t95 = T10
+t96 = T1
+t97 = 998244352 / T1
+param 3
+param t97
+t98 = call f_power
+param t95
+param 0
+param t96
+param t98
+t99 = call f_fft
+t100 = T11
+t101 = T1
+t102 = 998244352 / T1
+param 3
+param t102
+t103 = call f_power
+param t100
+param 0
+param t101
+param t103
+t104 = call f_fft
+T28 = 0
+l29:
+t105 = T28 < T1
+if t105 != 0 goto l31
+if t105 == 0 goto l30
+l31:
+t106 = T28 * 4
+t107 = T28 * 4
+t108 = T10[t107]
+t109 = T28 * 4
+t110 = T11[t109]
+param t108
+param t110
+t111 = call f_multiply
+T10[t106] = t111
+t112 = T28 + 1
+T28 = t112
+goto l29
+l30:
+t113 = T10
+t114 = T1
+t115 = 998244352 / T1
+t116 = 998244352 - t115
+param 3
+param t116
+t117 = call f_power
+param t113
+param 0
+param t114
+param t117
+t118 = call f_fft
+T28 = 0
+l32:
+t119 = T28 < T1
+if t119 != 0 goto l34
+if t119 == 0 goto l33
+l34:
+t120 = T28 * 4
+t121 = T28 * 4
+t122 = T10[t121]
+t123 = T1
+param t123
+param 998244351
+t124 = call f_power
+param t122
+param t124
+t125 = call f_multiply
+T10[t120] = t125
+t126 = T28 + 1
+T28 = t126
+goto l32
+l33:
+param 82
+call f__sysy_stoptime
+t127 = T26 + T27
+t128 = t127 - 1
+t129 = T10
+param t128
+param t129
+call f_putarray
+return 0
+end f_main

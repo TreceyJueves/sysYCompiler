@@ -1,0 +1,792 @@
+v0 = 0
+v1 = 0
+v2 = 0
+v3 = malloc 8388608
+v4 = malloc 8388608
+v5 = malloc 8388608
+v6 = malloc 8388608
+f_multiply [2] [14]
+store a0 0
+store a1 1
+load 1 t0
+t0 = t0 == x0
+store t0 2
+load 2 t0
+if t0 != x0 goto l0
+load 2 t0
+if t0 == x0 goto l1
+l0:
+a0 = x0
+return
+l1:
+load 1 t0
+t1 = 1
+t0 = t0 == t1
+store t0 3
+load 3 t0
+if t0 != x0 goto l2
+load 3 t0
+if t0 == x0 goto l3
+l2:
+load 0 t0
+t1 = 998244353
+t0 = t0 % t1
+store t0 4
+load 4 t0
+a0 = t0
+return
+l3:
+load 1 t0
+t1 = 2
+t0 = t0 / t1
+store t0 6
+load 0 t0
+a0 = t0
+load 6 t0
+a1 = t0
+call f_multiply
+store a0 7
+load 7 t0
+store t0 5
+load 5 t0
+load 5 t1
+t0 = t0 + t1
+store t0 8
+load 8 t0
+t1 = 998244353
+t0 = t0 % t1
+store t0 9
+load 9 t0
+store t0 5
+load 1 t0
+t1 = 2
+t0 = t0 % t1
+store t0 10
+load 10 t0
+t1 = 1
+t0 = t0 == t1
+store t0 11
+load 11 t0
+if t0 != x0 goto l4
+load 11 t0
+if t0 == x0 goto l5
+l4:
+load 5 t0
+load 0 t1
+t0 = t0 + t1
+store t0 12
+load 12 t0
+t1 = 998244353
+t0 = t0 % t1
+store t0 13
+load 13 t0
+a0 = t0
+return
+goto l6
+l5:
+load 5 t0
+a0 = t0
+return
+l6:
+end f_multiply
+f_power [2] [13]
+store a0 0
+store a1 1
+load 1 t0
+t0 = t0 == x0
+store t0 2
+load 2 t0
+if t0 != x0 goto l7
+load 2 t0
+if t0 == x0 goto l8
+l7:
+t0 = 1
+a0 = t0
+return
+l8:
+load 1 t0
+t1 = 2
+t0 = t0 / t1
+store t0 4
+load 0 t0
+a0 = t0
+load 4 t0
+a1 = t0
+call f_power
+store a0 5
+load 5 t0
+store t0 3
+load 3 t0
+store t0 6
+load 3 t0
+store t0 7
+load 6 t0
+a0 = t0
+load 7 t0
+a1 = t0
+call f_multiply
+store a0 8
+load 8 t0
+store t0 3
+load 1 t0
+t1 = 2
+t0 = t0 % t1
+store t0 9
+load 9 t0
+t1 = 1
+t0 = t0 == t1
+store t0 10
+load 10 t0
+if t0 != x0 goto l9
+load 10 t0
+if t0 == x0 goto l10
+l9:
+load 3 t0
+store t0 11
+load 11 t0
+a0 = t0
+load 0 t0
+a1 = t0
+call f_multiply
+store a0 12
+load 12 t0
+a0 = t0
+return
+goto l11
+l10:
+load 3 t0
+a0 = t0
+return
+l11:
+end f_power
+f_memmove [4] [11]
+store a0 0
+store a1 1
+store a2 2
+store a3 3
+store x0 4
+l12:
+load 4 t0
+load 3 t1
+t0 = t0 < t1
+store t0 5
+load 5 t0
+if t0 != x0 goto l14
+load 5 t0
+if t0 == x0 goto l13
+l14:
+load 1 t0
+load 4 t1
+t0 = t0 + t1
+store t0 6
+load 6 t0
+t1 = 4
+t0 = t0 * t1
+store t0 7
+load 4 t0
+t1 = 4
+t0 = t0 * t1
+store t0 8
+load 8 t0
+load 2 t2
+t2 = t2 + t0
+t3 = t2 [0]
+store t3 9
+load 7 t0
+load 9 t1
+load 0 t2
+t2 = t2 + t0
+t2 [0] = t1
+load 4 t0
+t1 = 1
+t0 = t0 + t1
+store t0 10
+load 10 t0
+store t0 4
+goto l12
+l13:
+load 4 t0
+a0 = t0
+return
+end f_memmove
+f_fft [4] [68]
+store a0 0
+store a1 1
+store a2 2
+store a3 3
+load 2 t0
+t1 = 1
+t0 = t0 == t1
+store t0 4
+load 4 t0
+if t0 != x0 goto l15
+load 4 t0
+if t0 == x0 goto l16
+l15:
+t0 = 1
+a0 = t0
+return
+l16:
+store x0 5
+l17:
+load 5 t0
+load 2 t1
+t0 = t0 < t1
+store t0 6
+load 6 t0
+if t0 != x0 goto l19
+load 6 t0
+if t0 == x0 goto l18
+l19:
+load 5 t0
+t1 = 2
+t0 = t0 % t1
+store t0 7
+load 7 t0
+t0 = t0 == x0
+store t0 8
+load 8 t0
+if t0 != x0 goto l20
+load 8 t0
+if t0 == x0 goto l21
+l20:
+load 5 t0
+t1 = 2
+t0 = t0 / t1
+store t0 9
+load 9 t0
+t1 = 4
+t0 = t0 * t1
+store t0 10
+load 5 t0
+load 1 t1
+t0 = t0 + t1
+store t0 11
+load 11 t0
+t1 = 4
+t0 = t0 * t1
+store t0 12
+load 12 t0
+load 0 t2
+t2 = t2 + t0
+t3 = t2 [0]
+store t3 13
+load 10 t0
+load 13 t1
+loadaddr v3 t2
+t2 = t2 + t0
+t2 [0] = t1
+goto l22
+l21:
+load 2 t0
+t1 = 2
+t0 = t0 / t1
+store t0 14
+load 5 t0
+t1 = 2
+t0 = t0 / t1
+store t0 15
+load 14 t0
+load 15 t1
+t0 = t0 + t1
+store t0 16
+load 16 t0
+t1 = 4
+t0 = t0 * t1
+store t0 17
+load 5 t0
+load 1 t1
+t0 = t0 + t1
+store t0 18
+load 18 t0
+t1 = 4
+t0 = t0 * t1
+store t0 19
+load 19 t0
+load 0 t2
+t2 = t2 + t0
+t3 = t2 [0]
+store t3 20
+load 17 t0
+load 20 t1
+loadaddr v3 t2
+t2 = t2 + t0
+t2 [0] = t1
+l22:
+load 5 t0
+t1 = 1
+t0 = t0 + t1
+store t0 21
+load 21 t0
+store t0 5
+goto l17
+l18:
+load 0 t0
+store t0 22
+loadaddr v3 t0
+store t0 23
+load 22 t0
+a0 = t0
+load 1 t0
+a1 = t0
+load 23 t0
+a2 = t0
+load 2 t0
+a3 = t0
+call f_memmove
+store a0 24
+load 0 t0
+store t0 25
+load 2 t0
+t1 = 2
+t0 = t0 / t1
+store t0 26
+load 3 t0
+a0 = t0
+load 3 t0
+a1 = t0
+call f_multiply
+store a0 27
+load 25 t0
+a0 = t0
+load 1 t0
+a1 = t0
+load 26 t0
+a2 = t0
+load 27 t0
+a3 = t0
+call f_fft
+store a0 28
+load 0 t0
+store t0 29
+load 2 t0
+t1 = 2
+t0 = t0 / t1
+store t0 30
+load 1 t0
+load 30 t1
+t0 = t0 + t1
+store t0 31
+load 2 t0
+t1 = 2
+t0 = t0 / t1
+store t0 32
+load 3 t0
+a0 = t0
+load 3 t0
+a1 = t0
+call f_multiply
+store a0 33
+load 29 t0
+a0 = t0
+load 31 t0
+a1 = t0
+load 32 t0
+a2 = t0
+load 33 t0
+a3 = t0
+call f_fft
+store a0 34
+store x0 5
+t0 = 1
+store t0 35
+l23:
+load 2 t0
+t1 = 2
+t0 = t0 / t1
+store t0 36
+load 5 t0
+load 36 t1
+t0 = t0 < t1
+store t0 37
+load 37 t0
+if t0 != x0 goto l25
+load 37 t0
+if t0 == x0 goto l24
+l25:
+load 1 t0
+load 5 t1
+t0 = t0 + t1
+store t0 39
+load 39 t0
+t1 = 4
+t0 = t0 * t1
+store t0 40
+load 40 t0
+load 0 t2
+t2 = t2 + t0
+t3 = t2 [0]
+store t3 41
+load 41 t0
+store t0 38
+load 1 t0
+load 5 t1
+t0 = t0 + t1
+store t0 43
+load 2 t0
+t1 = 2
+t0 = t0 / t1
+store t0 44
+load 43 t0
+load 44 t1
+t0 = t0 + t1
+store t0 45
+load 45 t0
+t1 = 4
+t0 = t0 * t1
+store t0 46
+load 46 t0
+load 0 t2
+t2 = t2 + t0
+t3 = t2 [0]
+store t3 47
+load 47 t0
+store t0 42
+load 1 t0
+load 5 t1
+t0 = t0 + t1
+store t0 48
+load 48 t0
+t1 = 4
+t0 = t0 * t1
+store t0 49
+load 35 t0
+store t0 50
+load 42 t0
+store t0 51
+load 50 t0
+a0 = t0
+load 51 t0
+a1 = t0
+call f_multiply
+store a0 52
+load 38 t0
+load 52 t1
+t0 = t0 + t1
+store t0 53
+load 53 t0
+t1 = 998244353
+t0 = t0 % t1
+store t0 54
+load 49 t0
+load 54 t1
+load 0 t2
+t2 = t2 + t0
+t2 [0] = t1
+load 1 t0
+load 5 t1
+t0 = t0 + t1
+store t0 55
+load 2 t0
+t1 = 2
+t0 = t0 / t1
+store t0 56
+load 55 t0
+load 56 t1
+t0 = t0 + t1
+store t0 57
+load 57 t0
+t1 = 4
+t0 = t0 * t1
+store t0 58
+load 35 t0
+store t0 59
+load 42 t0
+store t0 60
+load 59 t0
+a0 = t0
+load 60 t0
+a1 = t0
+call f_multiply
+store a0 61
+load 38 t0
+load 61 t1
+t0 = t0 - t1
+store t0 62
+load 62 t0
+t1 = 998244353
+t0 = t0 + t1
+store t0 63
+load 63 t0
+t1 = 998244353
+t0 = t0 % t1
+store t0 64
+load 58 t0
+load 64 t1
+load 0 t2
+t2 = t2 + t0
+t2 [0] = t1
+load 35 t0
+store t0 65
+load 65 t0
+a0 = t0
+load 3 t0
+a1 = t0
+call f_multiply
+store a0 66
+load 66 t0
+store t0 35
+load 5 t0
+t1 = 1
+t0 = t0 + t1
+store t0 67
+load 67 t0
+store t0 5
+goto l23
+l24:
+a0 = x0
+return
+end f_fft
+f_main [0] [46]
+t1 = 998244353
+loadaddr v0 t0
+t0 [0] = t1
+t1 = 2097152
+loadaddr v2 t0
+t0 [0] = t1
+loadaddr v4 t0
+store t0 1
+load 1 t0
+a0 = t0
+call f_getarray
+store a0 2
+load 2 t0
+store t0 0
+loadaddr v5 t0
+store t0 4
+load 4 t0
+a0 = t0
+call f_getarray
+store a0 5
+load 5 t0
+store t0 3
+t0 = 82
+a0 = t0
+call f__sysy_starttime
+t0 = 1
+loadaddr v1 t1
+t1 [0] = t0
+l26:
+load 0 t0
+load 3 t1
+t0 = t0 + t1
+store t0 6
+load 6 t0
+t1 = 1
+t0 = t0 - t1
+store t0 7
+load v1 t0
+load 7 t1
+t0 = t0 < t1
+store t0 8
+load 8 t0
+if t0 != x0 goto l28
+load 8 t0
+if t0 == x0 goto l27
+l28:
+load v1 t0
+t1 = 2
+t0 = t0 * t1
+store t0 9
+load 9 t0
+loadaddr v1 t1
+t1 [0] = t0
+goto l26
+l27:
+loadaddr v4 t0
+store t0 10
+load v1 t0
+store t0 11
+t0 = 998244352
+load v1 t1
+t0 = t0 / t1
+store t0 12
+t0 = 3
+a0 = t0
+load 12 t0
+a1 = t0
+call f_power
+store a0 13
+load 10 t0
+a0 = t0
+a1 = x0
+load 11 t0
+a2 = t0
+load 13 t0
+a3 = t0
+call f_fft
+store a0 14
+loadaddr v5 t0
+store t0 15
+load v1 t0
+store t0 16
+t0 = 998244352
+load v1 t1
+t0 = t0 / t1
+store t0 17
+t0 = 3
+a0 = t0
+load 17 t0
+a1 = t0
+call f_power
+store a0 18
+load 15 t0
+a0 = t0
+a1 = x0
+load 16 t0
+a2 = t0
+load 18 t0
+a3 = t0
+call f_fft
+store a0 19
+store x0 20
+l29:
+load 20 t0
+load v1 t1
+t0 = t0 < t1
+store t0 21
+load 21 t0
+if t0 != x0 goto l31
+load 21 t0
+if t0 == x0 goto l30
+l31:
+load 20 t0
+t1 = 4
+t0 = t0 * t1
+store t0 22
+load 20 t0
+t1 = 4
+t0 = t0 * t1
+store t0 23
+load 23 t0
+loadaddr v4 t2
+t2 = t2 + t0
+t3 = t2 [0]
+store t3 24
+load 20 t0
+t1 = 4
+t0 = t0 * t1
+store t0 25
+load 25 t0
+loadaddr v5 t2
+t2 = t2 + t0
+t3 = t2 [0]
+store t3 26
+load 24 t0
+a0 = t0
+load 26 t0
+a1 = t0
+call f_multiply
+store a0 27
+load 22 t0
+load 27 t1
+loadaddr v4 t2
+t2 = t2 + t0
+t2 [0] = t1
+load 20 t0
+t1 = 1
+t0 = t0 + t1
+store t0 28
+load 28 t0
+store t0 20
+goto l29
+l30:
+loadaddr v4 t0
+store t0 29
+load v1 t0
+store t0 30
+t0 = 998244352
+load v1 t1
+t0 = t0 / t1
+store t0 31
+t0 = 998244352
+load 31 t1
+t0 = t0 - t1
+store t0 32
+t0 = 3
+a0 = t0
+load 32 t0
+a1 = t0
+call f_power
+store a0 33
+load 29 t0
+a0 = t0
+a1 = x0
+load 30 t0
+a2 = t0
+load 33 t0
+a3 = t0
+call f_fft
+store a0 34
+store x0 20
+l32:
+load 20 t0
+load v1 t1
+t0 = t0 < t1
+store t0 35
+load 35 t0
+if t0 != x0 goto l34
+load 35 t0
+if t0 == x0 goto l33
+l34:
+load 20 t0
+t1 = 4
+t0 = t0 * t1
+store t0 36
+load 20 t0
+t1 = 4
+t0 = t0 * t1
+store t0 37
+load 37 t0
+loadaddr v4 t2
+t2 = t2 + t0
+t3 = t2 [0]
+store t3 38
+load v1 t0
+store t0 39
+load 39 t0
+a0 = t0
+t0 = 998244351
+a1 = t0
+call f_power
+store a0 40
+load 38 t0
+a0 = t0
+load 40 t0
+a1 = t0
+call f_multiply
+store a0 41
+load 36 t0
+load 41 t1
+loadaddr v4 t2
+t2 = t2 + t0
+t2 [0] = t1
+load 20 t0
+t1 = 1
+t0 = t0 + t1
+store t0 42
+load 42 t0
+store t0 20
+goto l32
+l33:
+t0 = 82
+a0 = t0
+call f__sysy_stoptime
+load 0 t0
+load 3 t1
+t0 = t0 + t1
+store t0 43
+load 43 t0
+t1 = 1
+t0 = t0 - t1
+store t0 44
+loadaddr v4 t0
+store t0 45
+load 44 t0
+a0 = t0
+load 45 t0
+a1 = t0
+call f_putarray
+a0 = x0
+return
+end f_main
