@@ -6,6 +6,7 @@
 整个代码是从0开始写的，没有框架（不知道以后会不会改版）
 
 sysy2riscv为三部分合在一起之后的效果,是三阶段合在一起后经过修改得到的,和那三个单阶段的不是完全一样,可以过function_test, performance_test为386s
+胡乱优化版仍然没有分配寄存器，做了一些无伤大雅的优化，现在成绩是290s，应该不会再改了
 
 sysy2eeyore eeyore2tigger tigger2riscv连续使用可能出错，但是可以分别过相应的单阶段function test
 
